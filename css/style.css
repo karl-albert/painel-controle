@@ -1,0 +1,643 @@
+/* ==============================================================================
+   PAINEL DE CONTROLE MOBILE (PWA) · IPHONE / SAFARI OPTIMIZED
+   Design System: Dark Glassmorphism High-Contrast
+   ============================================================================== */
+
+:root {
+  --bg-dark: #13131e;
+  --bg-panel: #1a1b26;
+  --bg-card: #212234;
+  --bg-card-hover: #2a2b42;
+  --bg-input: #0f0f17;
+  --border-color: #363852;
+  
+  --text-white: #ffffff;
+  --text-primary: #cdd6f4;
+  --text-muted: #939ab7;
+  --text-dim: #585b70;
+
+  --color-green: #22c55e;
+  --color-green-bg: rgba(34, 197, 94, 0.12);
+  --color-green-glow: rgba(34, 197, 94, 0.4);
+
+  --color-yellow: #eab308;
+  --color-yellow-bg: rgba(234, 179, 8, 0.14);
+  --color-yellow-glow: rgba(234, 179, 8, 0.4);
+
+  --color-red: #ef4444;
+  --color-red-bg: rgba(239, 68, 68, 0.14);
+  --color-red-glow: rgba(239, 68, 68, 0.4);
+
+  --color-blue: #89b4fa;
+  --color-blue-bg: rgba(137, 180, 250, 0.14);
+  --color-purple: #cba6f7;
+
+  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", Menlo, Consolas, Monaco, monospace;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --tabbar-height: 64px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+input, textarea {
+  user-select: text;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  min-height: 100vh;
+  padding-top: calc(var(--safe-top) + 60px);
+  padding-bottom: calc(var(--safe-bottom) + var(--tabbar-height) + 16px);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==============================================================================
+   HEADER FIXO TOPO
+   ============================================================================== */
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--safe-top) + 60px);
+  padding-top: var(--safe-top);
+  background: rgba(19, 19, 30, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #212234, #2a2b42);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.header-title-box h1 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-white);
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+}
+
+.header-title-box .clock {
+  font-size: 11px;
+  color: var(--color-blue);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-icon:active {
+  transform: scale(0.92);
+  background: var(--bg-card-hover);
+}
+
+.spin {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+
+/* ==============================================================================
+   BANNER GLOBAL DE STATUS
+   ============================================================================== */
+.banner-global {
+  margin: 12px 14px 16px 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-global::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--color-green);
+}
+
+.banner-global.yellow::before { background: var(--color-yellow); }
+.banner-global.red::before { background: var(--color-red); }
+
+.banner-content h2 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 2px;
+}
+
+.banner-content p {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.badge-sla {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--color-green-bg);
+  color: var(--color-green);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  white-space: nowrap;
+}
+
+/* ==============================================================================
+   SEÇÃO & CARDS DE PIPELINES
+   ============================================================================== */
+.container {
+  padding: 0 14px;
+}
+
+.section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dim);
+  font-weight: 700;
+  margin: 18px 4px 10px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-pipeline {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  position: relative;
+}
+
+.card-pipeline:active {
+  transform: scale(0.99);
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.pipe-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pipe-icon {
+  font-size: 24px;
+}
+
+.pipe-name-box h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-white);
+  letter-spacing: -0.2px;
+}
+
+.pipe-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--color-blue-bg);
+  color: var(--color-blue);
+  margin-top: 3px;
+}
+
+/* Farol 3D Luminoso */
+.farol-led {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.farol-led.green {
+  background: radial-gradient(circle at 35% 35%, #86efac, #22c55e 60%, #14532d);
+  border: 1.5px solid #15803d;
+  box-shadow: 0 0 14px var(--color-green-glow);
+}
+
+.farol-led.yellow {
+  background: radial-gradient(circle at 35% 35%, #fef08a, #eab308 60%, #713f12);
+  border: 1.5px solid #a16207;
+  box-shadow: 0 0 14px var(--color-yellow-glow);
+}
+
+.farol-led.red {
+  background: radial-gradient(circle at 35% 35%, #fca5a5, #ef4444 60%, #7f1d1d);
+  border: 1.5px solid #b91c1c;
+  box-shadow: 0 0 14px var(--color-red-glow);
+}
+
+.farol-led.loading {
+  background: #334155;
+  border: 1.5px solid #475569;
+}
+
+.card-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: var(--bg-panel);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+.metric-item .label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 2px;
+}
+
+.metric-item .value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-white);
+  font-family: var(--font-mono);
+}
+
+.card-footer-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.pipe-cron {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ==============================================================================
+   LOG VISUAL DAS ÚLTIMAS 12 EXECUÇÕES (SLOTS)
+   ============================================================================== */
+.slots-container {
+  display: flex;
+  gap: 4px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  overflow-x: auto;
+}
+
+.slot-circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: #2b2d42;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: bold;
+}
+
+.slot-circle.success { background: var(--color-green); color: #000; }
+.slot-circle.failure { background: var(--color-red); color: #fff; }
+.slot-circle.running { background: var(--color-yellow); color: #000; }
+
+/* ==============================================================================
+   DISPARO DE ROTINAS (TAB 2)
+   ============================================================================== */
+.dispatch-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.dispatch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.btn-dispatch {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  transition: all 0.15s ease;
+  margin-top: 10px;
+}
+
+.btn-dispatch:active {
+  transform: scale(0.97);
+  background: #1e40af;
+}
+
+.btn-dispatch:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==============================================================================
+   HUB DASHBOARDS (TAB 3)
+   ============================================================================== */
+.dash-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dash-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dash-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--color-green-bg);
+  color: var(--color-green);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.dash-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.btn-open-dash {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  color: var(--color-blue);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+  transition: background 0.15s ease;
+}
+
+.btn-open-dash:active {
+  background: var(--bg-card-hover);
+}
+
+/* ==============================================================================
+   CONFIGURAÇÕES (TAB 4)
+   ============================================================================== */
+.config-group {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.config-group h4 {
+  font-size: 14px;
+  color: var(--text-white);
+  margin-bottom: 10px;
+}
+
+.input-box {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-white);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.input-box:focus {
+  outline: none;
+  border-color: var(--color-blue);
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--color-blue);
+  color: #0b132b;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.tutorial-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.tutorial-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-blue-bg);
+  color: var(--color-blue);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* ==============================================================================
+   BARRA DE ABAS INFERIOR (IOS TAB BAR)
+   ============================================================================== */
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--safe-bottom) + var(--tabbar-height));
+  padding-bottom: var(--safe-bottom);
+  background: rgba(26, 27, 38, 0.94);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 1000;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 20%;
+  transition: color 0.15s ease;
+}
+
+.tab-item .tab-icon {
+  font-size: 20px;
+  transition: transform 0.15s ease;
+}
+
+.tab-item.active {
+  color: var(--color-blue);
+}
+
+.tab-item.active .tab-icon {
+  transform: scale(1.12);
+}
+
+/* Telas (Tab Views) */
+.tab-view {
+  display: none;
+}
+
+.tab-view.active {
+  display: block;
+}
+
+/* Toast Notificação */
+.toast {
+  position: fixed;
+  bottom: calc(var(--safe-bottom) + var(--tabbar-height) + 20px);
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(33, 34, 52, 0.96);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2000;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
