@@ -98,6 +98,15 @@ const EXTRA_DASHBOARDS = [
     badge: '🌐 Web Público',
     descricao: 'Camada de Lakehouse e modelo semântico otimizado rodando sobre infraestrutura Fabric.',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
+  },
+  {
+    id: 'bf_snowflake',
+    name: 'Bolsa Família Snowflake',
+    categoria: 'Snowflake · Data Cloud',
+    icone: '❄️',
+    badge: '🌐 Web Público',
+    descricao: 'Consultas analíticas de alta performance e agregação multidimensional em Snowflake Data Cloud.',
+    url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   }
 ];
 
