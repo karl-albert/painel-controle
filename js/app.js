@@ -79,16 +79,9 @@ const EXTRA_DASHBOARDS = [
     icone: '📊',
     badge: '🌐 Web Público',
     descricao: 'Consolidado de vendas, performance de faturamento, metas comerciais e ticket médio.',
+    action_label: 'Power BI Service',
+    action_url: 'https://app.powerbi.com/',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiZWFlNTVjMDMtYzVjYS00MzMzLWE0OTEtZTVlNDQxNmI5YTIyIiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9'
-  },
-  {
-    id: 'rh',
-    name: 'DASHBOARDS RH',
-    categoria: 'People Analytics',
-    icone: '👥',
-    badge: '🌐 Web Público',
-    descricao: 'Headcount, distribuição de cargos, turnover, admissões, demissões e indicadores.',
-    url: 'https://app.powerbi.com/view?r=eyJrIjoiZGUzZDliNDItYzU4NC00NTUzLWEzMTctYWEwZjc2MWExNzY2IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=500edb03e3400545be91'
   },
   {
     id: 'bf_fabric',
@@ -97,6 +90,8 @@ const EXTRA_DASHBOARDS = [
     icone: '⚡',
     badge: '🌐 Web Público',
     descricao: 'Camada de Lakehouse e modelo semântico otimizado rodando sobre infraestrutura Fabric.',
+    action_label: 'Atualizar no Fabric',
+    action_url: 'https://app.powerbi.com/groups/0c2a1a5e-4519-4e4e-b3e6-14280c11291d?experience=power-bi',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   },
   {
@@ -106,6 +101,8 @@ const EXTRA_DASHBOARDS = [
     icone: '❄️',
     badge: '🌐 Web Público',
     descricao: 'Consultas analíticas de alta performance e agregação multidimensional em Snowflake Data Cloud.',
+    action_label: 'Console Snowflake',
+    action_url: 'https://app.snowflake.com/',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   }
 ];
@@ -521,9 +518,17 @@ const App = {
         </div>
 
         <div class="card-actions-row">
-          <a href="${d.url}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-report" style="width:100%;font-size:13px;padding:11px;">
-            <span>Abrir Relatório</span>
-            <span>↗</span>
+          ${d.action_url ? `
+            <a href="${d.action_url}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-dispatch">
+              <span>⚡ ${d.action_label}</span>
+            </a>
+          ` : `
+            <button class="btn-card-action btn-card-disabled" disabled>
+              <span>⚙️ Pipeline Local</span>
+            </button>
+          `}
+          <a href="${d.url}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-report">
+            <span>Abrir Relatório ↗</span>
           </a>
         </div>
 
