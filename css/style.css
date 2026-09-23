@@ -306,9 +306,11 @@ body {
   box-shadow: 0 0 14px var(--color-red-glow);
 }
 
+.farol-led.gray,
 .farol-led.loading {
-  background: #334155;
-  border: 1.5px solid #475569;
+  background: radial-gradient(circle at 35% 35%, #94a3b8, #475569 60%, #1e293b);
+  border: 1.5px solid #64748b;
+  box-shadow: 0 0 10px rgba(100, 116, 139, 0.3);
 }
 
 /* Linha de Ações Rápidas (Disparar & Relatório) */
@@ -440,6 +442,7 @@ body {
 .slot-circle.success { background: var(--color-green); color: #000; }
 .slot-circle.failure { background: var(--color-red); color: #fff; }
 .slot-circle.running { background: var(--color-yellow); color: #000; }
+.slot-circle.gray { background: #262938; color: #64748b; border: 1px solid rgba(255, 255, 255, 0.08); font-size: 10px; font-weight: 500; }
 
 /* ==============================================================================
    DISPARO DE ROTINAS (TAB 2)
