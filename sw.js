@@ -1,10 +1,10 @@
-const CACHE_NAME = 'painel-controle-v4';
+const CACHE_NAME = 'painel-controle-v5';
 const ASSETS = [
   './',
   './index.html',
-  './css/style.css',
-  './js/app.js',
-  './js/github.js',
+  './css/style.css?v=5',
+  './js/app.js?v=5',
+  './js/github.js?v=5',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -13,10 +13,10 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
@@ -27,21 +27,26 @@ self.addEventListener('activate', (event) => {
           if (key !== CACHE_NAME) return caches.delete(key);
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
+// Network-First: Sempre busca a versão mais recente na rede. Se offline, usa o cache.
 self.addEventListener('fetch', (event) => {
-  // Pass GitHub API requests directly to network
   if (event.request.url.includes('api.github.com')) {
     event.respondWith(fetch(event.request));
     return;
   }
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
-    })
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
+          const resClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
+        }
+        return networkResponse;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
