@@ -74,26 +74,29 @@ const PIPELINES = [
 const EXTRA_DASHBOARDS = [
   {
     id: 'vendas',
-    name: 'Dashboards Vendas',
+    name: 'DASHBOARDS VENDAS',
     categoria: 'Comercial & Vendas',
     icone: '📊',
     badge: '🌐 Web Público',
+    descricao: 'Consolidado de vendas, performance de faturamento, metas comerciais e ticket médio.',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiZWFlNTVjMDMtYzVjYS00MzMzLWE0OTEtZTVlNDQxNmI5YTIyIiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9'
   },
   {
     id: 'rh',
-    name: 'Dashboards RH',
+    name: 'DASHBOARDS RH',
     categoria: 'People Analytics',
     icone: '👥',
     badge: '🌐 Web Público',
+    descricao: 'Headcount, distribuição de cargos, turnover, admissões, demissões e indicadores.',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiZGUzZDliNDItYzU4NC00NTUzLWEzMTctYWEwZjc2MWExNzY2IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=500edb03e3400545be91'
   },
   {
     id: 'bf_fabric',
     name: 'Bolsa Família Fabric',
-    categoria: 'Microsoft Fabric',
+    categoria: 'Microsoft Fabric · OneLake',
     icone: '⚡',
     badge: '🌐 Web Público',
+    descricao: 'Camada de Lakehouse e modelo semântico otimizado rodando sobre infraestrutura Fabric.',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   }
 ];
@@ -495,19 +498,27 @@ const App = {
     container.innerHTML = '';
     EXTRA_DASHBOARDS.forEach(d => {
       const card = document.createElement('div');
-      card.className = 'extra-dash-card';
+      card.className = 'card-pipeline';
       card.innerHTML = `
-        <div class="extra-dash-info">
-          <span class="dash-ico">${d.icone}</span>
-          <div>
-            <h4>${d.name}</h4>
-            <span>${d.categoria}</span>
+        <div class="card-top">
+          <div class="pipe-info">
+            <span class="pipe-icon">${d.icone}</span>
+            <div class="pipe-name-box">
+              <h3>${d.name}</h3>
+              <span class="pipe-tag">${d.categoria}</span>
+            </div>
           </div>
+          <span class="dash-badge">${d.badge}</span>
         </div>
-        <a href="${d.url}" target="_blank" rel="noopener noreferrer" class="btn-open-mini">
-          <span>Abrir</span>
-          <span>↗</span>
-        </a>
+
+        <div class="card-actions-row">
+          <a href="${d.url}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-report" style="width:100%;font-size:13px;padding:11px;">
+            <span>Abrir Relatório</span>
+            <span>↗</span>
+          </a>
+        </div>
+
+        <p class="dash-desc" style="font-size:12px;color:var(--text-muted);margin-top:2px;line-height:1.45;">${d.descricao}</p>
       `;
       container.appendChild(card);
     });
