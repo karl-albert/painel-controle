@@ -64,40 +64,13 @@
           Carregando pipelines...
         </div>
       </div>
-    </div>
-  </main>
-
-  <!-- =========================================================================
-       VIEW 2: DISPARO MANUAL DE WORKFLOWS
-       ========================================================================= -->
-  <main id="view-disparo" class="tab-view">
-    <div class="container" style="padding-top:12px;">
+    <!-- Central de Relatórios Power BI Adicionais -->
+    <div class="container" style="padding-bottom: 24px;">
       <div class="section-title">
-        <span>Disparar Rotinas Manualmente</span>
-        <span style="font-size:11px;color:var(--color-blue);font-weight:600;">GitHub Actions</span>
-      </div>
-      <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px;padding:0 4px;">
-        Toque no botão para forçar a execução imediata da rotina pelo celular:
-      </div>
-      <div id="disparosContainer">
-        <!-- Renderizado dinamicamente via app.js -->
-      </div>
-    </div>
-  </main>
-
-  <!-- =========================================================================
-       VIEW 3: HUB DE DASHBOARDS POWER BI
-       ========================================================================= -->
-  <main id="view-dashboards" class="tab-view">
-    <div class="container" style="padding-top:12px;">
-      <div class="section-title">
-        <span>Central de Relatórios</span>
+        <span>Outros Dashboards</span>
         <span style="font-size:11px;color:var(--color-green);font-weight:600;">Power BI</span>
       </div>
-      <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px;padding:0 4px;">
-        Acesso direto aos dashboards na nuvem formatados para visualização web:
-      </div>
-      <div id="dashboardsContainer">
+      <div id="extraDashboardsContainer" class="extra-dashboards-grid">
         <!-- Renderizado dinamicamente via app.js -->
       </div>
     </div>
@@ -207,15 +180,7 @@
   <nav class="tab-bar">
     <button class="tab-item active" data-tab="status">
       <span class="tab-icon">🚦</span>
-      <span>Status</span>
-    </button>
-    <button class="tab-item" data-tab="disparo">
-      <span class="tab-icon">⚡</span>
-      <span>Disparar</span>
-    </button>
-    <button class="tab-item" data-tab="dashboards">
-      <span class="tab-icon">📊</span>
-      <span>Relatórios</span>
+      <span>Status & Faróis</span>
     </button>
     <button class="tab-item" data-tab="observabilidade">
       <span class="tab-icon">🛡️</span>
