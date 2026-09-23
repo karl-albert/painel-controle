@@ -12,7 +12,8 @@ const PIPELINES = [
     wf: 'rotina_b3.yml',
     cron_desc: 'Seg a Sex às 10:30, 14:30 e 18:30 (BRT)',
     tolerance_min: 20,
-    icon: '🇧🇷'
+    icon: '🇧🇷',
+    pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiNmY2NWMyNTEtNDM1My00ODIxLWI1MzItOGNhMWZkY2Q3YjM0IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9'
   },
   {
     id: 'americans',
@@ -22,7 +23,8 @@ const PIPELINES = [
     wf: 'cron.yml',
     cron_desc: 'Seg a Sex de hora em hora (:00 BRT)',
     tolerance_min: 25,
-    icon: '🇺🇸'
+    icon: '🇺🇸',
+    pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiYjAwNWQ5YjctM2Q2Ni00Mjk1LTk2NjktM2JkYmExODRiYjU1IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=6fe02fe638410bddb7bc'
   },
   {
     id: 'macro',
@@ -32,7 +34,8 @@ const PIPELINES = [
     wf: 'rotina_macro.yml',
     cron_desc: 'Sábados às 08:00 (BRT)',
     tolerance_min: 60,
-    icon: '📈'
+    icon: '📈',
+    pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiNmY2NWMyNTEtNDM1My00ODIxLWI1MzItOGNhMWZkY2Q3YjM0IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9'
   },
   {
     id: 'mp',
@@ -42,7 +45,8 @@ const PIPELINES = [
     wf: 'carga-mp.yml',
     cron_desc: 'Diariamente às 22:30 (BRT)',
     tolerance_min: 60,
-    icon: '🏛️'
+    icon: '🏛️',
+    pbi_url: 'https://github.com/karl-albert/Ministerio_Publico_Supabase'
   },
   {
     id: 'mercadolivre',
@@ -52,7 +56,8 @@ const PIPELINES = [
     wf: 'rotina_mercadolivre.yml',
     cron_desc: 'Diariamente às 08:00, 18:00 e 23:00 (BRT)',
     tolerance_min: 30,
-    icon: '🛍️'
+    icon: '🛍️',
+    pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiZGFjOGQwM2QtNDE2Yy00YTI0LWIwYjYtZDg1NjhiZWI2ZjNjIiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=9535a769441bb9a9d013'
   },
   {
     id: 'bolsafamilia',
@@ -61,46 +66,27 @@ const PIPELINES = [
     repo: null,
     cron_desc: 'Pipeline Local + Google Cloud Platform',
     tolerance_min: 120,
-    icon: '🏛️'
+    icon: '🏛️',
+    pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   }
 ];
 
-const DASHBOARDS = [
+const EXTRA_DASHBOARDS = [
   {
     id: 'vendas',
-    name: 'DASHBOARDS VENDAS',
+    name: 'Dashboards Vendas',
     categoria: 'Comercial & Vendas',
     icone: '📊',
     badge: '🌐 Web Público',
-    descricao: 'Consolidado de vendas, performance de faturamento, metas comerciais e ticket médio.',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiZWFlNTVjMDMtYzVjYS00MzMzLWE0OTEtZTVlNDQxNmI5YTIyIiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9'
   },
   {
-    id: 'b3',
-    name: 'DASHBOARDS B3 | AÇÕES B3',
-    categoria: 'Mercado Financeiro · B3',
-    icone: '📈',
-    badge: '🌐 Web Público',
-    descricao: 'Cotações históricas, oscilações diárias, índices setoriais, IBOV e fluxo de capitais.',
-    url: 'https://app.powerbi.com/view?r=eyJrIjoiNmY2NWMyNTEtNDM1My00ODIxLWI1MzItOGNhMWZkY2Q3YjM0IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9'
-  },
-  {
     id: 'rh',
-    name: 'DASHBOARDS RH',
+    name: 'Dashboards RH',
     categoria: 'People Analytics',
     icone: '👥',
     badge: '🌐 Web Público',
-    descricao: 'Headcount, distribuição de cargos, turnover, admissões, demissões e indicadores.',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiZGUzZDliNDItYzU4NC00NTUzLWEzMTctYWEwZjc2MWExNzY2IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=500edb03e3400545be91'
-  },
-  {
-    id: 'bf_bq',
-    name: 'Bolsa Família BigQuery',
-    categoria: 'Google BigQuery',
-    icone: '🏛️',
-    badge: '🌐 Web Público',
-    descricao: 'Mapeamento nacional de benefícios, pagamentos por município e processamento BigQuery.',
-    url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   },
   {
     id: 'bf_fabric',
@@ -108,17 +94,7 @@ const DASHBOARDS = [
     categoria: 'Microsoft Fabric',
     icone: '⚡',
     badge: '🌐 Web Público',
-    descricao: 'Camada de Lakehouse e modelo semântico otimizado rodando sobre infraestrutura Fabric.',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
-  },
-  {
-    id: 'ml_intel',
-    name: 'Mercado Livre Inteligência',
-    categoria: 'E-commerce & Varejo',
-    icone: '🛍️',
-    badge: '🌐 Power BI',
-    descricao: 'Top 50 produtos mais vendidos por categoria, ticket médio, análise de smartphones e ranking.',
-    url: 'https://app.powerbi.com/'
   }
 ];
 
@@ -290,8 +266,7 @@ const App = {
   init() {
     this.setupClock();
     this.setupNavigation();
-    this.renderDashboards();
-    this.renderDisparos();
+    this.renderExtraDashboards();
     this.setupConfig();
     this.carregarDados();
 
@@ -407,6 +382,27 @@ const App = {
           <div class="farol-led ${evalRes.cor}"></div>
         </div>
 
+        <div class="card-actions-row">
+          ${pipe.repo ? `
+            <button class="btn-card-action btn-card-dispatch" id="btn-disp-${pipe.id}">
+              <span>⚡ Disparar GitHub</span>
+            </button>
+          ` : `
+            <button class="btn-card-action btn-card-disabled" disabled>
+              <span>⚙️ Pipeline Local</span>
+            </button>
+          `}
+          ${pipe.pbi_url ? `
+            <a href="${pipe.pbi_url}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-report">
+              <span>Abrir Relatório ↗</span>
+            </a>
+          ` : `
+            <a href="https://github.com/${pipe.repo}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-report">
+              <span>Repositório ↗</span>
+            </a>
+          `}
+        </div>
+
         <div class="card-metrics">
           <div class="metric-item">
             <div class="label">Última Execução</div>
@@ -427,6 +423,33 @@ const App = {
         ${slotsHtml}
       `;
       container.appendChild(card);
+
+      // Listener para disparo imediato no GitHub Actions
+      if (pipe.repo) {
+        const btn = card.querySelector(`#btn-disp-${pipe.id}`);
+        if (btn) {
+          btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!confirm(`Deseja disparar a rotina '${pipe.name}' no GitHub Actions agora?`)) return;
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳ Enviando...</span>';
+            try {
+              await GitHubClient.dispatchWorkflow(pipe.repo, pipe.wf, 'main');
+              btn.innerHTML = '<span>✅ Disparo Enviado!</span>';
+              App.showToast(`🚀 Rotina ${pipe.tag} disparada com sucesso!`);
+              setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<span>⚡ Disparar GitHub</span>';
+                App.carregarDados(true);
+              }, 3000);
+            } catch (err) {
+              alert('Erro ao disparar: ' + err.message);
+              btn.disabled = false;
+              btn.innerHTML = '<span>⚡ Disparar GitHub</span>';
+            }
+          });
+        }
+      }
     }
   },
 
@@ -465,77 +488,24 @@ const App = {
     }
   },
 
-  renderDisparos() {
-    const container = document.getElementById('disparosContainer');
+  renderExtraDashboards() {
+    const container = document.getElementById('extraDashboardsContainer');
     if (!container) return;
 
     container.innerHTML = '';
-    const dispatchable = PIPELINES.filter(p => p.repo !== null);
-
-    dispatchable.forEach(p => {
+    EXTRA_DASHBOARDS.forEach(d => {
       const card = document.createElement('div');
-      card.className = 'dispatch-card';
+      card.className = 'extra-dash-card';
       card.innerHTML = `
-        <div class="dispatch-header">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="font-size:20px;">${p.icon}</span>
-            <div>
-              <div style="font-size:14px;font-weight:700;color:#fff;">${p.name}</div>
-              <div style="font-size:11px;color:var(--text-muted);">${p.repo} (${p.wf})</div>
-            </div>
+        <div class="extra-dash-info">
+          <span class="dash-ico">${d.icone}</span>
+          <div>
+            <h4>${d.name}</h4>
+            <span>${d.categoria}</span>
           </div>
         </div>
-        <button class="btn-dispatch" id="btn-disp-${p.id}">
-          <span>⚡ Disparar no GitHub Actions</span>
-        </button>
-      `;
-      container.appendChild(card);
-
-      const btn = card.querySelector(`#btn-disp-${p.id}`);
-      btn.addEventListener('click', async () => {
-        if (!confirm(`Deseja disparar a rotina '${p.name}' no GitHub Actions agora?`)) return;
-        btn.disabled = true;
-        btn.innerHTML = '<span>⏳ Enviando disparo...</span>';
-        try {
-          await GitHubClient.dispatchWorkflow(p.repo, p.wf, 'main');
-          btn.innerHTML = '<span>✅ Disparo Enviado!</span>';
-          App.showToast(`🚀 Rotina ${p.tag} disparada com sucesso!`);
-          setTimeout(() => {
-            btn.disabled = false;
-            btn.innerHTML = '<span>⚡ Disparar no GitHub Actions</span>';
-            App.carregarDados(true);
-          }, 3000);
-        } catch (e) {
-          alert('Erro ao disparar: ' + e.message);
-          btn.disabled = false;
-          btn.innerHTML = '<span>⚡ Disparar no GitHub Actions</span>';
-        }
-      });
-    });
-  },
-
-  renderDashboards() {
-    const container = document.getElementById('dashboardsContainer');
-    if (!container) return;
-
-    container.innerHTML = '';
-    DASHBOARDS.forEach(d => {
-      const card = document.createElement('div');
-      card.className = 'dash-card';
-      card.innerHTML = `
-        <div class="dash-card-header">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="font-size:22px;">${d.icone}</span>
-            <div>
-              <div style="font-size:14px;font-weight:700;color:#fff;">${d.name}</div>
-              <div style="font-size:11px;color:var(--color-blue);">${d.categoria}</div>
-            </div>
-          </div>
-          <span class="dash-badge">${d.badge}</span>
-        </div>
-        <p class="dash-desc">${d.descricao}</p>
-        <a href="${d.url}" target="_blank" class="btn-open-dash">
-          <span>Abrir Relatório</span>
+        <a href="${d.url}" target="_blank" rel="noopener noreferrer" class="btn-open-mini">
+          <span>Abrir</span>
           <span>↗</span>
         </a>
       `;
