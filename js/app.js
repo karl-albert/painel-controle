@@ -61,12 +61,38 @@ const PIPELINES = [
   },
   {
     id: 'bolsafamilia',
-    name: 'Bolsa Família · BigQuery & Transparência',
+    name: 'Bolsa Família · Google BigQuery',
     tag: 'GCP BigQuery',
     repo: null,
     cron_desc: 'Pipeline Local + Google Cloud Platform',
     tolerance_min: 120,
     icon: '🏛️',
+    action_label: 'Console BigQuery',
+    action_url: 'https://console.cloud.google.com/bigquery',
+    pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
+  },
+  {
+    id: 'bf_fabric',
+    name: 'Bolsa Família · Microsoft Fabric',
+    tag: 'OneLake Fabric',
+    repo: null,
+    cron_desc: 'Lakehouse LH_Bolsa_Familia · Delta Tables',
+    tolerance_min: 120,
+    icon: '⚡',
+    action_label: 'Atualizar no Fabric',
+    action_url: 'https://app.powerbi.com/groups/0c2a1a5e-4519-4e4e-b3e6-14280c11291d?experience=power-bi',
+    pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
+  },
+  {
+    id: 'bf_snowflake',
+    name: 'Bolsa Família · Snowflake',
+    tag: 'Snowflake Cloud',
+    repo: null,
+    cron_desc: 'Warehouse Snowflake · Consultas Analíticas',
+    tolerance_min: 120,
+    icon: '❄️',
+    action_label: 'Console Snowflake',
+    action_url: 'https://app.snowflake.com/',
     pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   }
 ];
@@ -82,28 +108,6 @@ const EXTRA_DASHBOARDS = [
     action_label: 'Power BI Service',
     action_url: 'https://app.powerbi.com/',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiZWFlNTVjMDMtYzVjYS00MzMzLWE0OTEtZTVlNDQxNmI5YTIyIiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9'
-  },
-  {
-    id: 'bf_fabric',
-    name: 'Bolsa Família Fabric',
-    categoria: 'Microsoft Fabric · OneLake',
-    icone: '⚡',
-    badge: '🌐 Web Público',
-    descricao: 'Camada de Lakehouse e modelo semântico otimizado rodando sobre infraestrutura Fabric.',
-    action_label: 'Atualizar no Fabric',
-    action_url: 'https://app.powerbi.com/groups/0c2a1a5e-4519-4e4e-b3e6-14280c11291d?experience=power-bi',
-    url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
-  },
-  {
-    id: 'bf_snowflake',
-    name: 'Bolsa Família Snowflake',
-    categoria: 'Snowflake · Data Cloud',
-    icone: '❄️',
-    badge: '🌐 Web Público',
-    descricao: 'Consultas analíticas de alta performance e agregação multidimensional em Snowflake Data Cloud.',
-    action_label: 'Console Snowflake',
-    action_url: 'https://app.snowflake.com/',
-    url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   }
 ];
 
@@ -189,14 +193,14 @@ function getTimelineHorarios(pid, agoraBrt) {
 
 // Avaliação de Semáforo
 function avaliarStatusPipeline(pipe, runs) {
-  if (pipe.id === 'bolsafamilia') {
+  if (pipe.id === 'bolsafamilia' || pipe.id === 'bf_fabric' || pipe.id === 'bf_snowflake') {
     return {
-      cor: 'green',
-      statusTxt: 'EM DIA',
-      ultimaExec: 'Ontem às 23:15',
-      tempoDecorrido: 'Última carga OK',
-      proxExec: 'Hoje às 23:00',
-      slots: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+      cor: 'gray',
+      statusTxt: 'NÃO EXECUTOU',
+      ultimaExec: 'Sem Histórico',
+      tempoDecorrido: 'Sem execuções no Actions',
+      proxExec: 'Sob Demanda',
+      slots: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
     };
   }
 
@@ -370,8 +374,8 @@ const App = {
       if (evalRes.slots && evalRes.slots.length > 0) {
         slotsHtml = `<div class="slots-container">` + 
           evalRes.slots.map(s => {
-            const cls = s === 1 ? 'success' : (s === 2 ? 'running' : 'failure');
-            const sym = s === 1 ? '✓' : (s === 2 ? '⋯' : '✕');
+            const cls = s === 1 ? 'success' : (s === 2 ? 'running' : (s === 3 ? 'gray' : 'failure'));
+            const sym = s === 1 ? '✓' : (s === 2 ? '⋯' : (s === 3 ? '—' : '✕'));
             return `<div class="slot-circle ${cls}">${sym}</div>`;
           }).join('') +
         `</div>`;
@@ -396,6 +400,10 @@ const App = {
             <button class="btn-card-action btn-card-dispatch" id="btn-disp-${pipe.id}">
               <span>⚡ Disparar GitHub</span>
             </button>
+          ` : pipe.action_url ? `
+            <a href="${pipe.action_url}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-dispatch" style="text-decoration:none;">
+              <span>⚡ ${pipe.action_label || 'Acessar Serviço'}</span>
+            </a>
           ` : `
             <button class="btn-card-action btn-card-disabled" disabled>
               <span>⚙️ Pipeline Local</span>
@@ -421,7 +429,7 @@ const App = {
           <div class="metric-item">
             <div class="label">Próximo Agendado</div>
             <div class="value">${evalRes.proxExec}</div>
-            <div style="font-size:10px;color:var(--color-blue);margin-top:2px;">Status: ${evalRes.statusTxt}</div>
+            <div style="font-size:10px;color:${evalRes.cor === 'gray' ? 'var(--text-muted)' : (evalRes.cor === 'red' ? 'var(--color-red)' : (evalRes.cor === 'yellow' ? 'var(--color-yellow)' : 'var(--color-blue)'))};margin-top:2px;">Status: ${evalRes.statusTxt}</div>
           </div>
         </div>
 
@@ -446,15 +454,11 @@ const App = {
               await GitHubClient.dispatchWorkflow(pipe.repo, pipe.wf, 'main');
               btn.innerHTML = '<span>✅ Disparo Enviado!</span>';
               App.showToast(`🚀 Rotina ${pipe.tag} disparada com sucesso!`);
-              setTimeout(() => {
-                btn.disabled = false;
-                btn.innerHTML = '<span>⚡ Disparar GitHub</span>';
-                App.carregarDados(true);
-              }, 3000);
+              setTimeout(() => App.carregarDados(true), 2500);
             } catch (err) {
-              alert('Erro ao disparar: ' + err.message);
               btn.disabled = false;
               btn.innerHTML = '<span>⚡ Disparar GitHub</span>';
+              App.showToast(`❌ Falha no disparo: ${err.message}`);
             }
           });
         }
@@ -488,9 +492,9 @@ const App = {
       badgeEl.style.background = 'var(--color-yellow-bg)';
       badgeEl.style.borderColor = 'rgba(234, 179, 8, 0.3)';
     } else {
-      titleEl.innerText = 'Tudo 100% Operacional';
-      descEl.innerText = `Todos os ${PIPELINES.length} pipelines em dia com o SLA programado.`;
-      badgeEl.innerText = '🟢 SLA 100%';
+      titleEl.innerText = 'Operação em Dia';
+      descEl.innerText = `${g} pipelines no SLA programado (3 sob demanda).`;
+      badgeEl.innerText = '🟢 SLA OK';
       badgeEl.style.color = 'var(--color-green)';
       badgeEl.style.background = 'var(--color-green-bg)';
       badgeEl.style.borderColor = 'rgba(34, 197, 94, 0.3)';
