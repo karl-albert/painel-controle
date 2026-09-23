@@ -17,7 +17,7 @@
   <link rel="manifest" href="manifest.json">
 
   <!-- Estilos -->
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 
@@ -149,6 +149,20 @@
       </div>
 
       <div class="section-title">
+        <span>Sincronização & Cache</span>
+      </div>
+
+      <div class="config-group">
+        <h4>Atualizar App Manualmente</h4>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">
+          Se o iPhone estiver exibindo uma versão antiga em cache, toque abaixo para limpar o cache local e forçar o recarregamento imediato:
+        </p>
+        <button class="btn-primary" id="btnForceUpdate" style="background:linear-gradient(135deg, #2563eb, #1d4ed8);color:#fff;">
+          🔄 Forçar Atualização / Limpar Cache
+        </button>
+      </div>
+
+      <div class="section-title">
         <span>Instalação no iPhone</span>
       </div>
 
@@ -196,7 +210,7 @@
   <div class="toast" id="toast"></div>
 
   <!-- Scripts -->
-  <script src="js/github.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/github.js?v=5"></script>
+  <script src="js/app.js?v=5"></script>
 </body>
 </html>
