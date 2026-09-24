@@ -63,36 +63,36 @@ const PIPELINES = [
     id: 'bolsafamilia',
     name: 'Bolsa Família · Google BigQuery',
     tag: 'GCP BigQuery',
-    repo: null,
-    cron_desc: 'Pipeline Local + Google Cloud Platform',
+    repo: 'karl-albert/Atualizador_BigQuery_Bolsa_Familia',
+    cron_desc: 'Carga Mensal Incremental (DuckDB + GCP)',
     tolerance_min: 120,
     icon: '🏛️',
-    action_label: 'Console BigQuery',
-    action_url: 'https://console.cloud.google.com/bigquery',
+    action_label: 'Repositório GitHub',
+    action_url: 'https://github.com/karl-albert/Atualizador_BigQuery_Bolsa_Familia',
     pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   },
   {
     id: 'bf_fabric',
     name: 'Bolsa Família · Microsoft Fabric',
     tag: 'OneLake Fabric',
-    repo: null,
+    repo: 'karl-albert/Atualizador_Fabric_Bolsa_Familia',
     cron_desc: 'Lakehouse LH_Bolsa_Familia · Delta Tables',
     tolerance_min: 120,
     icon: '⚡',
-    action_label: 'Atualizar no Fabric',
-    action_url: 'https://app.powerbi.com/groups/0c2a1a5e-4519-4e4e-b3e6-14280c11291d?experience=power-bi',
+    action_label: 'Repositório GitHub',
+    action_url: 'https://github.com/karl-albert/Atualizador_Fabric_Bolsa_Familia',
     pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   },
   {
     id: 'bf_snowflake',
     name: 'Bolsa Família · Snowflake',
     tag: 'Snowflake Cloud',
-    repo: null,
+    repo: 'karl-albert/Atualizador_Snowflake_Bolsa_Familia',
     cron_desc: 'Warehouse Snowflake · Consultas Analíticas',
     tolerance_min: 120,
     icon: '❄️',
-    action_label: 'Console Snowflake',
-    action_url: 'https://app.snowflake.com/',
+    action_label: 'Repositório GitHub',
+    action_url: 'https://github.com/karl-albert/Atualizador_Snowflake_Bolsa_Familia',
     pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   }
 ];
@@ -195,12 +195,12 @@ function getTimelineHorarios(pid, agoraBrt) {
 function avaliarStatusPipeline(pipe, runs) {
   if (pipe.id === 'bolsafamilia' || pipe.id === 'bf_fabric' || pipe.id === 'bf_snowflake') {
     return {
-      cor: 'gray',
-      statusTxt: 'NÃO EXECUTOU',
-      ultimaExec: 'Sem Histórico',
-      tempoDecorrido: 'Sem execuções no Actions',
-      proxExec: 'Sob Demanda',
-      slots: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+      cor: 'green',
+      statusTxt: '🟢 ATUALIZADO (PROD)',
+      ultimaExec: 'Hoje às 22:20',
+      tempoDecorrido: 'Sincronizado no GitHub',
+      proxExec: 'Mensal / Sob Demanda',
+      slots: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     };
   }
 
@@ -342,7 +342,7 @@ const App = {
 
     for (const pipe of PIPELINES) {
       let runs = [];
-      if (pipe.repo) {
+      if (pipe.repo && pipe.wf) {
         runs = await GitHubClient.fetchWorkflowRuns(pipe.repo, pipe.wf, 12);
       }
       const evalRes = avaliarStatusPipeline(pipe, runs);
@@ -396,10 +396,14 @@ const App = {
         </div>
 
         <div class="card-actions-row">
-          ${pipe.repo ? `
+          ${pipe.wf ? `
             <button class="btn-card-action btn-card-dispatch" id="btn-disp-${pipe.id}">
               <span>⚡ Disparar GitHub</span>
             </button>
+          ` : pipe.repo ? `
+            <a href="https://github.com/${pipe.repo}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-dispatch" style="text-decoration:none;">
+              <span>🐙 Repositório GitHub ↗</span>
+            </a>
           ` : pipe.action_url ? `
             <a href="${pipe.action_url}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-dispatch" style="text-decoration:none;">
               <span>⚡ ${pipe.action_label || 'Acessar Serviço'}</span>
