@@ -279,6 +279,7 @@ const App = {
   init() {
     this.setupClock();
     this.setupNavigation();
+    this.setupRenderButtons();
     this.renderExtraDashboards();
     this.setupConfig();
     this.carregarDados();
@@ -288,7 +289,59 @@ const App = {
 
     // Registro do Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW fail:', err));
+      navigator.serviceWorker.register('./sw.js?v=11').catch(err => console.log('SW fail:', err));
+    }
+  },
+
+  setupRenderButtons() {
+    const topLatest = document.getElementById('btn-top-render-latest');
+    const topClean = document.getElementById('btn-top-render-clean');
+    if (topLatest) {
+      topLatest.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.triggerRenderDeploy(false);
+      });
+    }
+    if (topClean) {
+      topClean.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.triggerRenderDeploy(true);
+      });
+    }
+  },
+
+  async triggerRenderDeploy(clearCache = false) {
+    let hook = localStorage.getItem('render_deploy_hook_ml') || '';
+    const tipo = clearCache ? 'Limpo (Clear Cache)' : 'Padrão (Latest Commit)';
+    const renderDashboardUrl = 'https://dashboard.render.com/web/srv-dare74d9fdbs73987rv0';
+
+    if (!hook) {
+      hook = prompt(
+        'Para disparar o deploy direto pelo celular com 1 clique (sem abrir o navegador), cole a URL do Deploy Hook do Render:\n\n' +
+        '(Encontrado em: Render Dashboard -> Settings -> Deploy Hook)\n\n' +
+        'Ou cancele para abrir a página do Render no navegador:',
+        'https://api.render.com/deploy/srv-dare74d9fdbs73987rv0?key='
+      );
+      if (hook && hook.trim().startsWith('http')) {
+        localStorage.setItem('render_deploy_hook_ml', hook.trim());
+        App.showToast('✅ Deploy Hook salvo no celular!');
+      }
+    }
+
+    if (hook && hook.trim().startsWith('http')) {
+      try {
+        let url = hook.trim();
+        if (clearCache) url += (url.includes('?') ? '&' : '?') + 'clearCache=clear';
+        App.showToast(`🚀 Disparando Deploy ${tipo} no Render...`);
+        await fetch(url, { method: 'POST', mode: 'no-cors' });
+        App.showToast(`✅ Deploy ${tipo} enviado com sucesso ao Render!`);
+      } catch (err) {
+        App.showToast('Abrindo painel do Render no navegador...');
+        window.open(renderDashboardUrl, '_blank');
+      }
+    } else {
+      App.showToast('Abrindo painel do Render para Manual Deploy...');
+      window.open(renderDashboardUrl, '_blank');
     }
   },
 
@@ -435,16 +488,17 @@ const App = {
         ` : ''}
 
         <div class="card-metrics">
-          <div class="label">Última Execução</div>
-          <div class="value">${evalRes.ultimaExec}</div>
-          <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${evalRes.tempoDecorrido}</div>
+          <div class="metric-item">
+            <div class="label">Última Execução</div>
+            <div class="value">${evalRes.ultimaExec}</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${evalRes.tempoDecorrido}</div>
+          </div>
+          <div class="metric-item">
+            <div class="label">Próximo Agendado</div>
+            <div class="value">${evalRes.proxExec}</div>
+            <div style="font-size:10px;color:${evalRes.cor === 'gray' ? 'var(--text-muted)' : (evalRes.cor === 'red' ? 'var(--color-red)' : (evalRes.cor === 'yellow' ? 'var(--color-yellow)' : 'var(--color-blue)'))};margin-top:2px;">Status: ${evalRes.statusTxt}</div>
+          </div>
         </div>
-        <div class="metric-item">
-          <div class="label">Próximo Agendado</div>
-          <div class="value">${evalRes.proxExec}</div>
-          <div style="font-size:10px;color:${evalRes.cor === 'gray' ? 'var(--text-muted)' : (evalRes.cor === 'red' ? 'var(--color-red)' : (evalRes.cor === 'yellow' ? 'var(--color-yellow)' : 'var(--color-blue)'))};margin-top:2px;">Status: ${evalRes.statusTxt}</div>
-        </div>
-      </div>
 
       <div class="card-footer-info">
         <div class="pipe-cron">⏱️ ${pipe.cron_desc}</div>
@@ -481,50 +535,17 @@ const App = {
     if (pipe.id === 'mercadolivre') {
       const btnRenderLatest = card.querySelector('#btn-render-latest');
       const btnRenderClean = card.querySelector('#btn-render-clean');
-      const renderDashboardUrl = 'https://dashboard.render.com/web/srv-dare74d9fdbs73987rv0';
-
-      const triggerRenderDeploy = async (clearCache) => {
-        let hook = localStorage.getItem('render_deploy_hook_ml') || '';
-        const tipo = clearCache ? 'Limpo (Clear Cache)' : 'Padrão (Latest Commit)';
-        if (!hook) {
-          hook = prompt('Para disparar o deploy direto pelo celular com 1 clique (sem abrir o navegador), cole a URL do Deploy Hook do Render:\n\n(Encontrado em: Render Dashboard -> Settings -> Deploy Hook)', 'https://api.render.com/deploy/srv-dare74d9fdbs73987rv0?key=');
-          if (hook && hook.trim().startsWith('http')) {
-            localStorage.setItem('render_deploy_hook_ml', hook.trim());
-            App.showToast('✅ Deploy Hook salvo no celular!');
-          }
-        }
-        if (hook && hook.trim().startsWith('http')) {
-          try {
-            let url = hook.trim();
-            if (clearCache) url += (url.includes('?') ? '&' : '?') + 'clearCache=clear';
-            App.showToast(`🚀 Disparando Deploy ${tipo} no Render...`);
-            const res = await fetch(url, { method: 'POST' });
-            if (res.ok) {
-              App.showToast(`✅ Deploy ${tipo} iniciado com sucesso no Render!`);
-            } else {
-              App.showToast(`⚠️ Hook retornou ${res.status}. Abrindo painel Render...`);
-              window.open(renderDashboardUrl, '_blank');
-            }
-          } catch (err) {
-            App.showToast('Abrindo painel do Render no navegador...');
-            window.open(renderDashboardUrl, '_blank');
-          }
-        } else {
-          App.showToast('Abrindo painel do Render para Manual Deploy...');
-          window.open(renderDashboardUrl, '_blank');
-        }
-      };
 
       if (btnRenderLatest) {
         btnRenderLatest.addEventListener('click', (e) => {
           e.stopPropagation();
-          triggerRenderDeploy(false);
+          App.triggerRenderDeploy(false);
         });
       }
       if (btnRenderClean) {
         btnRenderClean.addEventListener('click', (e) => {
           e.stopPropagation();
-          triggerRenderDeploy(true);
+          App.triggerRenderDeploy(true);
         });
       }
     }
