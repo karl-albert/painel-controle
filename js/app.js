@@ -289,7 +289,7 @@ const App = {
 
     // Registro do Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js?v=11').catch(err => console.log('SW fail:', err));
+      navigator.serviceWorker.register('./sw.js?v=12').catch(err => console.log('SW fail:', err));
     }
   },
 
@@ -479,10 +479,10 @@ const App = {
         ${pipe.id === 'mercadolivre' ? `
         <div class="card-actions-row" style="margin-top: 6px;">
           <button class="btn-card-action" style="background:#0ea5e9;color:#ffffff;border:none;" id="btn-render-latest">
-            <span>🌐 Render Deploy (Latest)</span>
+            <span>🌐 Deploy Latest</span>
           </button>
           <button class="btn-card-action" style="background:#2a2b42;color:#f9e2af;border:1px solid #363852;" id="btn-render-clean">
-            <span>🧹 Deploy Limpo (Clear Cache)</span>
+            <span>🧹 Deploy Clear Cache</span>
           </button>
         </div>
         ` : ''}
