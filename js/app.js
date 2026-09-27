@@ -279,7 +279,7 @@ const App = {
   init() {
     this.setupClock();
     this.setupNavigation();
-    this.setupRenderButtons();
+
     this.renderExtraDashboards();
     this.setupConfig();
     this.carregarDados();
@@ -293,22 +293,7 @@ const App = {
     }
   },
 
-  setupRenderButtons() {
-    const topLatest = document.getElementById('btn-top-render-latest');
-    const topClean = document.getElementById('btn-top-render-clean');
-    if (topLatest) {
-      topLatest.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.triggerRenderDeploy(false);
-      });
-    }
-    if (topClean) {
-      topClean.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.triggerRenderDeploy(true);
-      });
-    }
-  },
+
 
   async triggerRenderDeploy(clearCache = false) {
     let hook = localStorage.getItem('render_deploy_hook_ml') || '';
@@ -548,6 +533,40 @@ const App = {
           App.triggerRenderDeploy(true);
         });
       }
+
+      // Widget Joca · Bot Mercado Livre (logo abaixo do card ML)
+      const jocaWidget = document.createElement('div');
+      jocaWidget.className = 'card-render-quick';
+      jocaWidget.innerHTML = `
+        <div class="render-quick-header">
+          <div class="render-quick-title">
+            <span style="font-size:22px;">🤖</span>
+            <div>
+              <h3>Joca · Bot Mercado Livre</h3>
+              <span class="render-quick-sub">Deploy Nuvem Render.com</span>
+            </div>
+          </div>
+          <span class="render-live-tag">● NUVEM</span>
+        </div>
+        <div class="card-actions-row" style="margin-top: 10px; margin-bottom: 0;">
+          <button class="btn-card-action" style="background:#0ea5e9;color:#ffffff;border:none;box-shadow:0 2px 8px rgba(14,165,233,0.35);padding:10px 6px;" id="btn-joca-render-latest">
+            <span>🌐 Deploy Latest</span>
+          </button>
+          <button class="btn-card-action" style="background:#2a2b42;color:#f9e2af;border:1px solid #363852;padding:10px 6px;" id="btn-joca-render-clean">
+            <span>🧹 Deploy Clear Cache</span>
+          </button>
+        </div>
+      `;
+      container.appendChild(jocaWidget);
+
+      jocaWidget.querySelector('#btn-joca-render-latest').addEventListener('click', (e) => {
+        e.stopPropagation();
+        App.triggerRenderDeploy(false);
+      });
+      jocaWidget.querySelector('#btn-joca-render-clean').addEventListener('click', (e) => {
+        e.stopPropagation();
+        App.triggerRenderDeploy(true);
+      });
     }
     }
   },
