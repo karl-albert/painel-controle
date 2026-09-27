@@ -79,8 +79,8 @@ const PIPELINES = [
     cron_desc: 'Lakehouse LH_Bolsa_Familia · Delta Tables',
     tolerance_min: 120,
     icon: '⚡',
-    action_label: 'Repositório GitHub',
-    action_url: 'https://github.com/karl-albert/Atualizador_Fabric_Bolsa_Familia',
+    action_label: 'Abrir Pipeline Fabric ↗',
+    action_url: 'https://app.fabric.microsoft.com/groups/0c2a1a5e-4519-4e4e-b3e6-14288c11291d/pipelines/fd4247e7-462e-4a39-8df4-4d4854da6311?experience=fabric-developer',
     pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiYTBiNWE4MmQtZDgxMy00Yzg5LWJkNGQtYmVmODBmZDBkYWQ4IiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=145393189824df4ec539'
   },
   {
@@ -423,50 +423,111 @@ const App = {
             </a>
           `}
         </div>
+        ${pipe.id === 'mercadolivre' ? `
+        <div class="card-actions-row" style="margin-top: 6px;">
+          <button class="btn-card-action" style="background:#0ea5e9;color:#ffffff;border:none;" id="btn-render-latest">
+            <span>🌐 Render Deploy (Latest)</span>
+          </button>
+          <button class="btn-card-action" style="background:#2a2b42;color:#f9e2af;border:1px solid #363852;" id="btn-render-clean">
+            <span>🧹 Deploy Limpo (Clear Cache)</span>
+          </button>
+        </div>
+        ` : ''}
 
         <div class="card-metrics">
-          <div class="metric-item">
-            <div class="label">Última Execução</div>
-            <div class="value">${evalRes.ultimaExec}</div>
-            <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${evalRes.tempoDecorrido}</div>
-          </div>
-          <div class="metric-item">
-            <div class="label">Próximo Agendado</div>
-            <div class="value">${evalRes.proxExec}</div>
-            <div style="font-size:10px;color:${evalRes.cor === 'gray' ? 'var(--text-muted)' : (evalRes.cor === 'red' ? 'var(--color-red)' : (evalRes.cor === 'yellow' ? 'var(--color-yellow)' : 'var(--color-blue)'))};margin-top:2px;">Status: ${evalRes.statusTxt}</div>
-          </div>
+          <div class="label">Última Execução</div>
+          <div class="value">${evalRes.ultimaExec}</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${evalRes.tempoDecorrido}</div>
         </div>
-
-        <div class="card-footer-info">
-          <div class="pipe-cron">⏱️ ${pipe.cron_desc}</div>
+        <div class="metric-item">
+          <div class="label">Próximo Agendado</div>
+          <div class="value">${evalRes.proxExec}</div>
+          <div style="font-size:10px;color:${evalRes.cor === 'gray' ? 'var(--text-muted)' : (evalRes.cor === 'red' ? 'var(--color-red)' : (evalRes.cor === 'yellow' ? 'var(--color-yellow)' : 'var(--color-blue)'))};margin-top:2px;">Status: ${evalRes.statusTxt}</div>
         </div>
+      </div>
 
-        ${slotsHtml}
-      `;
-      container.appendChild(card);
+      <div class="card-footer-info">
+        <div class="pipe-cron">⏱️ ${pipe.cron_desc}</div>
+      </div>
 
-      // Listener para disparo imediato no GitHub Actions
-      if (pipe.repo) {
-        const btn = card.querySelector(`#btn-disp-${pipe.id}`);
-        if (btn) {
-          btn.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            if (!confirm(`Deseja disparar a rotina '${pipe.name}' no GitHub Actions agora?`)) return;
-            btn.disabled = true;
-            btn.innerHTML = '<span>⏳ Enviando...</span>';
-            try {
-              await GitHubClient.dispatchWorkflow(pipe.repo, pipe.wf, 'main');
-              btn.innerHTML = '<span>✅ Disparo Enviado!</span>';
-              App.showToast(`🚀 Rotina ${pipe.tag} disparada com sucesso!`);
-              setTimeout(() => App.carregarDados(true), 2500);
-            } catch (err) {
-              btn.disabled = false;
-              btn.innerHTML = '<span>⚡ Disparar GitHub</span>';
-              App.showToast(`❌ Falha no disparo: ${err.message}`);
-            }
-          });
-        }
+      ${slotsHtml}
+    `;
+    container.appendChild(card);
+
+    // Listener para disparo imediato no GitHub Actions
+    if (pipe.repo) {
+      const btn = card.querySelector(`#btn-disp-${pipe.id}`);
+      if (btn) {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          if (!confirm(`Deseja disparar a rotina '${pipe.name}' no GitHub Actions agora?`)) return;
+          btn.disabled = true;
+          btn.innerHTML = '<span>⏳ Enviando...</span>';
+          try {
+            await GitHubClient.dispatchWorkflow(pipe.repo, pipe.wf, 'main');
+            btn.innerHTML = '<span>✅ Disparo Enviado!</span>';
+            App.showToast(`🚀 Rotina ${pipe.tag} disparada com sucesso!`);
+            setTimeout(() => App.carregarDados(true), 2500);
+          } catch (err) {
+            btn.disabled = false;
+            btn.innerHTML = '<span>⚡ Disparar GitHub</span>';
+            App.showToast(`❌ Falha no disparo: ${err.message}`);
+          }
+        });
       }
+    }
+
+    // Listener para os 2 deploys do Render.com (Mercado Livre)
+    if (pipe.id === 'mercadolivre') {
+      const btnRenderLatest = card.querySelector('#btn-render-latest');
+      const btnRenderClean = card.querySelector('#btn-render-clean');
+      const renderDashboardUrl = 'https://dashboard.render.com/web/srv-dare74d9fdbs73987rv0';
+
+      const triggerRenderDeploy = async (clearCache) => {
+        let hook = localStorage.getItem('render_deploy_hook_ml') || '';
+        const tipo = clearCache ? 'Limpo (Clear Cache)' : 'Padrão (Latest Commit)';
+        if (!hook) {
+          hook = prompt('Para disparar o deploy direto pelo celular com 1 clique (sem abrir o navegador), cole a URL do Deploy Hook do Render:\n\n(Encontrado em: Render Dashboard -> Settings -> Deploy Hook)', 'https://api.render.com/deploy/srv-dare74d9fdbs73987rv0?key=');
+          if (hook && hook.trim().startsWith('http')) {
+            localStorage.setItem('render_deploy_hook_ml', hook.trim());
+            App.showToast('✅ Deploy Hook salvo no celular!');
+          }
+        }
+        if (hook && hook.trim().startsWith('http')) {
+          try {
+            let url = hook.trim();
+            if (clearCache) url += (url.includes('?') ? '&' : '?') + 'clearCache=clear';
+            App.showToast(`🚀 Disparando Deploy ${tipo} no Render...`);
+            const res = await fetch(url, { method: 'POST' });
+            if (res.ok) {
+              App.showToast(`✅ Deploy ${tipo} iniciado com sucesso no Render!`);
+            } else {
+              App.showToast(`⚠️ Hook retornou ${res.status}. Abrindo painel Render...`);
+              window.open(renderDashboardUrl, '_blank');
+            }
+          } catch (err) {
+            App.showToast('Abrindo painel do Render no navegador...');
+            window.open(renderDashboardUrl, '_blank');
+          }
+        } else {
+          App.showToast('Abrindo painel do Render para Manual Deploy...');
+          window.open(renderDashboardUrl, '_blank');
+        }
+      };
+
+      if (btnRenderLatest) {
+        btnRenderLatest.addEventListener('click', (e) => {
+          e.stopPropagation();
+          triggerRenderDeploy(false);
+        });
+      }
+      if (btnRenderClean) {
+        btnRenderClean.addEventListener('click', (e) => {
+          e.stopPropagation();
+          triggerRenderDeploy(true);
+        });
+      }
+    }
     }
   },
 
