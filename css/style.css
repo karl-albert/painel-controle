@@ -676,3 +676,47 @@ body {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
 }
+
+/* Card Render Quick Deploy (Destaque Joca Nuvem) */
+.card-render-quick {
+  background: linear-gradient(135deg, #181935 0%, #101124 100%);
+  border: 1px solid #3c3e66;
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.render-quick-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.render-quick-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.render-quick-title h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-white);
+  margin: 0;
+}
+
+.render-quick-sub {
+  font-size: 11px;
+  color: var(--color-blue);
+  font-weight: 600;
+}
+
+.render-live-tag {
+  font-size: 10px;
+  font-weight: 800;
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 3px 8px;
+  border-radius: 12px;
+}
