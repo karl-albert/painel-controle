@@ -60,6 +60,19 @@ const PIPELINES = [
     pbi_url: 'https://app.powerbi.com/view?r=eyJrIjoiZGFjOGQwM2QtNDE2Yy00YTI0LWIwYjYtZDg1NjhiZWI2ZjNjIiwidCI6ImQ2Mjg5MWU0LWQ3ZmQtNDAzNS1iZTVlLTU2ZjU2ZWRjYzQ1OSJ9&pageName=9535a769441bb9a9d013'
   },
   {
+    id: 'ml_fabric',
+    name: 'Mercado Livre Fabric · Direct Lake (ML_F)',
+    tag: 'OneLake Fabric',
+    repo: 'karl-albert/Atualizador_Fabric_MercadoLivre',
+    wf: 'rotina_atualizador_fabric.yml',
+    cron_desc: 'Diariamente às 02:30, 11:30 e 21:30 (BRT)',
+    tolerance_min: 30,
+    icon: '⚡',
+    action_label: 'Abrir Notebook Fabric ↗',
+    action_url: 'https://app.fabric.microsoft.com/groups/0c2a1a5e-4519-4e4e-b3e6-14288c11291d/synapsenotebooks/20945385-9f35-46d8-b0d9-5bc694dd04cb?experience=fabric-developer',
+    pbi_url: 'https://app.fabric.microsoft.com/groups/0c2a1a5e-4519-4e4e-b3e6-14288c11291d'
+  },
+  {
     id: 'bolsafamilia',
     name: 'Bolsa Família · Google BigQuery',
     tag: 'GCP BigQuery',
@@ -178,6 +191,10 @@ function getTimelineHorarios(pid, agoraBrt) {
       timeline.push(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 8, 0));
       timeline.push(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 18, 0));
       timeline.push(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 0));
+    } else if (pid === 'ml_fabric') {
+      timeline.push(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 2, 30));
+      timeline.push(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 11, 30));
+      timeline.push(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 21, 30));
     }
   }
 
@@ -469,6 +486,16 @@ const App = {
           <button class="btn-card-action" style="background:#2a2b42;color:#f9e2af;border:1px solid #363852;" id="btn-render-clean">
             <span>🧹 Deploy Clear Cache</span>
           </button>
+        </div>
+        ` : ''}
+        ${pipe.id === 'ml_fabric' ? `
+        <div class="card-actions-row" style="margin-top: 6px;">
+          <a href="${pipe.action_url}" target="_blank" rel="noopener noreferrer" class="btn-card-action" style="background:#1e293b;color:#38bdf8;border:1px solid #334155;text-decoration:none;">
+            <span>📓 Notebook Fabric ↗</span>
+          </a>
+          <a href="https://github.com/${pipe.repo}" target="_blank" rel="noopener noreferrer" class="btn-card-action" style="background:#1e293b;color:#a5b4fc;border:1px solid #334155;text-decoration:none;">
+            <span>🐙 GitHub Actions ↗</span>
+          </a>
         </div>
         ` : ''}
 
