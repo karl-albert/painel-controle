@@ -1,10 +1,10 @@
-const CACHE_NAME = 'painel-controle-v13';
+const CACHE_NAME = 'painel-controle-v14';
 const ASSETS = [
   './',
   './index.html',
-  './css/style.css?v=13',
-  './js/app.js?v=13',
-  './js/github.js?v=13',
+  './css/style.css?v=14',
+  './js/app.js?v=14',
+  './js/github.js?v=14',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',

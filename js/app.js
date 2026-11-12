@@ -306,7 +306,7 @@ const App = {
 
     // Registro do Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js?v=12').catch(err => console.log('SW fail:', err));
+      navigator.serviceWorker.register('./sw.js?v=14').catch(err => console.log('SW fail:', err));
     }
   },
 
@@ -678,32 +678,96 @@ const App = {
     const tokenInput = document.getElementById('ghTokenInput');
     const saveBtn = document.getElementById('btnSaveToken');
     const testBtn = document.getElementById('btnTestToken');
+    const clearBtn = document.getElementById('btnClearToken');
+    const toggleBtn = document.getElementById('btnToggleToken');
     const statusBox = document.getElementById('tokenStatusBox');
+    const diagBox = document.getElementById('tokenDiagBox');
 
+    // Helpers de diagnóstico
+    const showDiag = (token) => {
+      if (!diagBox) return;
+      if (!token) {
+        diagBox.innerHTML = '⚪ Nenhum token salvo.';
+        return;
+      }
+      const len = token.length;
+      const prefix = token.substring(0, 8);
+      const suffix = token.substring(len - 4);
+      const hasSpaces = /\s/.test(token);
+      const hasQuotes = /["']/.test(token);
+      const hasBearer = token.toLowerCase().startsWith('bearer ');
+      const validPrefix = /^(ghp_|gho_|github_pat_)/.test(token);
+      let warns = [];
+      if (hasSpaces) warns.push('⚠️ Contém espaços');
+      if (hasQuotes) warns.push('⚠️ Contém aspas');
+      if (hasBearer) warns.push('⚠️ Remova "Bearer " do início');
+      if (!validPrefix) warns.push('⚠️ Prefixo incomum (esperado ghp_, gho_ ou github_pat_)');
+      diagBox.innerHTML = `🔑 Salvo: <b>${prefix}...${suffix}</b> (${len} chars)${warns.length ? '<br>' + warns.join('<br>') : ' ✅'}`;
+    };
+
+    // Carregar token atual e exibir diagnóstico
     if (tokenInput) {
-      tokenInput.value = GitHubClient.getToken();
+      const current = GitHubClient.getToken();
+      tokenInput.value = current;
+      showDiag(current);
     }
 
-    if (saveBtn) {
-      saveBtn.addEventListener('click', () => {
-        const val = tokenInput.value.trim();
-        GitHubClient.setToken(val);
-        this.showToast('💾 Token salvo com sucesso no iPhone!');
-        this.carregarDados();
+    // Toggle mostrar/ocultar token
+    if (toggleBtn && tokenInput) {
+      let visible = true; // começa como text (visível)
+      toggleBtn.addEventListener('click', () => {
+        visible = !visible;
+        tokenInput.type = visible ? 'text' : 'password';
+        toggleBtn.innerText = visible ? '🙈' : '👁️';
       });
     }
 
+    // Botão Limpar
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        if (!confirm('Remover o token salvo no iPhone?')) return;
+        GitHubClient.setToken(null);
+        if (tokenInput) tokenInput.value = '';
+        showDiag('');
+        if (statusBox) statusBox.innerHTML = '';
+        this.showToast('🗑️ Token removido!');
+      });
+    }
+
+    // Botão Salvar — sanitiza antes de gravar
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        let val = tokenInput.value || '';
+        // Sanitizar: remover espaços, aspas, "Bearer ", quebras de linha
+        val = val.replace(/[\s"']/g, '').replace(/^bearer\s*/i, '');
+        tokenInput.value = val;
+        GitHubClient.setToken(val || null);
+        showDiag(val);
+        this.showToast(val ? '💾 Token salvo com sucesso no iPhone!' : '🗑️ Token removido.');
+        if (val) this.carregarDados();
+      });
+    }
+
+    // Botão Testar — mostra diagnóstico detalhado
     if (testBtn) {
       testBtn.addEventListener('click', async () => {
-        testBtn.innerText = 'Testando...';
+        const token = GitHubClient.getToken();
+        showDiag(token);
+        if (!token) {
+          if (statusBox) statusBox.innerHTML = '<span style="color:var(--color-red);">🔴 Nenhum token para testar.</span>';
+          return;
+        }
+        testBtn.innerText = '⏳ Testando...';
+        testBtn.disabled = true;
         const res = await GitHubClient.testConnection();
-        testBtn.innerText = 'Testar Conexão';
+        testBtn.innerText = '🔌 Testar';
+        testBtn.disabled = false;
         if (res.ok) {
           statusBox.innerHTML = `<span style="color:var(--color-green);">🟢 Conectado como <b>@${res.user}</b> (Cota: ${res.remaining}/5000)</span>`;
           App.showToast(`✅ Conexão OK: @${res.user}`);
         } else {
           statusBox.innerHTML = `<span style="color:var(--color-red);">🔴 Falha: ${res.message}</span>`;
-          alert('Erro: ' + res.message);
+          if (diagBox) diagBox.innerHTML += `<br>❌ Resposta: ${res.message}`;
         }
       });
     }
